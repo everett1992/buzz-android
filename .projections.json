@@ -1,0 +1,15 @@
+{
+  "AndroidManifest.xml": {"type": "manifest"},
+  "build.xml": {"type": "build"},
+  "res/layout/*.xml": {
+    "type": "layout",
+    "alternate": "src/com/example/buzz/activities/{camelcase}Activity.java"
+  },
+  "res/menu/*.xml": {"type": "menu"},
+  "res/values/*.xml": {"type": "values"},
+  "res/xml/*.xml": {"type": "xml"},
+  "src/com/example/buzz/activities/*Activity.java": {
+    "type": "activity",
+    "alternate": "res/layout/{snakecase}.xml"
+  }
+}

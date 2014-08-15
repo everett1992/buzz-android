@@ -1,0 +1,25 @@
+/home/caleb/workspace/buzz-android/gen/com/example/buzz/R.java \
+ : /home/caleb/workspace/buzz-android/res/menu/main.xml \
+/home/caleb/workspace/buzz-android/res/drawable-hdpi/ic_action_search.png \
+/home/caleb/workspace/buzz-android/res/drawable-hdpi/ic_launcher.png \
+/home/caleb/workspace/buzz-android/res/drawable-ldpi/ic_launcher.png \
+/home/caleb/workspace/buzz-android/res/xml/preferences.xml \
+/home/caleb/workspace/buzz-android/res/drawable-mdpi/ic_action_search.png \
+/home/caleb/workspace/buzz-android/res/drawable-mdpi/ic_launcher.png \
+/home/caleb/workspace/buzz-android/res/drawable-xxhdpi/ic_action_search.png \
+/home/caleb/workspace/buzz-android/res/values/themes.xml \
+/home/caleb/workspace/buzz-android/res/values/strings.xml \
+/home/caleb/workspace/buzz-android/res/values/styles.xml \
+/home/caleb/workspace/buzz-android/res/drawable-xhdpi/ic_action_search.png \
+/home/caleb/workspace/buzz-android/res/drawable-xhdpi/ic_launcher.png \
+/home/caleb/workspace/buzz-android/res/layout/display_message.xml \
+/home/caleb/workspace/buzz-android/res/layout/main.xml \
+/home/caleb/workspace/buzz-android/bin/res/drawable-hdpi/ic_action_search.png \
+/home/caleb/workspace/buzz-android/bin/res/drawable-hdpi/ic_launcher.png \
+/home/caleb/workspace/buzz-android/bin/res/drawable-ldpi/ic_launcher.png \
+/home/caleb/workspace/buzz-android/bin/res/drawable-mdpi/ic_action_search.png \
+/home/caleb/workspace/buzz-android/bin/res/drawable-mdpi/ic_launcher.png \
+/home/caleb/workspace/buzz-android/bin/res/drawable-xxhdpi/ic_action_search.png \
+/home/caleb/workspace/buzz-android/bin/res/drawable-xhdpi/ic_action_search.png \
+/home/caleb/workspace/buzz-android/bin/res/drawable-xhdpi/ic_launcher.png \
+/home/caleb/workspace/buzz-android/bin/AndroidManifest.xml \

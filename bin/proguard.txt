@@ -1,0 +1,12 @@
+# view AndroidManifest.xml #generated:18
+-keep class com.example.buzz.DisplayMessageActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:25
+-keep class com.example.buzz.GlobalSettingsActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:11
+-keep class com.example.buzz.MainActivity { <init>(...); }
+
+# onClick res/layout/main.xml #generated:12
+-keepclassmembers class * { *** sendMessage(...); }
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Titles -->
+    <string name="title_activity_main">Hello World!</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="title_activity_settings_activity">My Message</string>
+    <string name="app_name">Hello World!</string>
+
+    <string name="edit_message">Enter a Message</string>
+    <string name="button_send">Send</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+
+    <!-- Preferences -->
+    <string name="pref_id_hash">ID hash</string>
+    <string name="pref_id_hash_summ">Your unique identifier</string>
+
+    <string name="pref_server">Server URl</string>
+    <string name="pref_server_summ">Address of the target server.</string>
+</resources>
