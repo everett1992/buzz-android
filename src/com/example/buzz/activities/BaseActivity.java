@@ -15,7 +15,7 @@ public class BaseActivity extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu items for use in the action bar
     MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.main, menu);
+    inflater.inflate(R.menu.action_bar, menu);
     return super.onCreateOptionsMenu(menu);
   }
 
@@ -23,9 +23,6 @@ public class BaseActivity extends Activity {
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle presses on the action bar items
     switch (item.getItemId()) {
-      case R.id.action_search:
-        //openSearch();
-        return true;
       case R.id.action_settings:
         openSettings();
         return true;
@@ -38,5 +35,6 @@ public class BaseActivity extends Activity {
     Intent intent = new Intent(this, GlobalSettingsActivity.class);
     startActivity(intent);
   }
+
 }
 
