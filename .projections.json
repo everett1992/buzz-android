@@ -3,13 +3,15 @@
   "build.xml": {"type": "build"},
   "res/layout/*.xml": {
     "type": "layout",
-    "alternate": "src/com/example/buzz/activities/{camelcase}Activity.java"
+    "alternate": "src/com/example/buzz/{camelcase}Activity.java"
   },
   "res/menu/*.xml": {"type": "menu"},
   "res/values/*.xml": {"type": "values"},
   "res/xml/*.xml": {"type": "xml"},
-  "src/com/example/buzz/activities/*Activity.java": {
+  "src/com/example/buzz/*Activity.java": {
     "type": "activity",
     "alternate": "res/layout/{snakecase}.xml"
-  }
+  },
+  "src/com/example/buzz/*Model.java": { "type": "model" },
+  "src/com/example/buzz/*.java": { "type": "source" }
 }

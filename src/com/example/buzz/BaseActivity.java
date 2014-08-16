@@ -1,12 +1,9 @@
 package com.example.buzz;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.content.Intent;
-import android.widget.EditText;
-import android.view.View;
-import android.view.MenuInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class BaseActivity extends Activity {
