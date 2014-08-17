@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,27 +26,29 @@ import com.google.gson.Gson;
 
 public class MainActivity extends BaseActivity {
   private EpisodeModel[] episodes;
-  private ArrayAdapter<EpisodeModel> adapter;
-  private TextView textView;
+  private TextView messageView;
   private ListView listView;
   private RequestQueue requestQueue;
 
   /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
+    super.onCreate(savedInstanceState);
 
-      // Set default values
-      PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+    // Set default values
+    PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-      setContentView(R.layout.main);
+    setContentView(R.layout.main);
 
-      textView = (TextView) findViewById(R.id.refresh_result);
-      listView = (ListView) findViewById(R.id.names);
-      requestQueue = Volley.newRequestQueue(this);
-  }
+    messageView = (TextView) findViewById(R.id.message);
+    listView = (ListView) findViewById(R.id.names);
+    requestQueue = Volley.newRequestQueue(this);
 
-  public void sync(View view) {
+    if (savedInstanceState != null) {
+      Gson gson = new Gson();
+      displayMessage(savedInstanceState.getString("message"));
+      displayEpisodes(savedInstanceState.getString("episodes"));
+    }
   }
 
   @Override
@@ -69,12 +70,17 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
   }
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    // save state of your activity to outState
+    Gson gson = new Gson();
+    String message = messageView.getText().toString();
 
-  public void downloadEpisodes() {
+    outState.putString("episodes", gson.toJson(episodes));
+    outState.putString("message", message);
   }
 
   public void refresh() {
-    final Context context = this;
     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
     String server = preferences.getString("pref_server", "");
     String user_id_hash = preferences.getString("pref_id_hash", "");
@@ -85,32 +91,45 @@ public class MainActivity extends BaseActivity {
       getSystemService(Context.CONNECTIVITY_SERVICE);
     NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
     if (networkInfo != null && networkInfo.isConnected()) {
-      textView.setText("refreshing...");
+      displayMessage("refreshing...");
       // Request a string response from the provided URL.
       JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
           null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
               try {
-                Gson gson = new Gson();
-                episodes = gson.fromJson(response.getJSONArray("episodes").toString(), EpisodeModel[].class);
-                adapter = new EpisodeArrayAdapter(context, android.R.layout.simple_list_item_1, episodes);
-                listView.setAdapter(adapter);
-                textView.setText("Done");
+                displayEpisodes(response.getJSONArray("episodes").toString());
               } catch (JSONException ex) {
-                textView.setText("JSON parse error");
+                displayMessage("JSON parse error");
               }
             }
           }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-              textView.setText("That didn't work!");
+              displayMessage("That didn't work!");
             }
           });
       // Add the request to the RequestQueue.
       requestQueue.add(jsonObjectRequest);
     } else {
-      textView.setText("No network connection available.");
+      messageView.setVisibility(View.VISIBLE);
+      messageView.setText("No network connection available.");
     }
+  }
+
+  private void displayMessage(String message) {
+    messageView.setText(message);
+  }
+
+  private void displayEpisodes(String episodes) {
+    Gson gson = new Gson();
+    displayEpisodes(gson.fromJson(episodes, EpisodeModel[].class));
+  }
+
+  private void displayEpisodes(EpisodeModel[] episodes) {
+    this.episodes = episodes;
+    EpisodeArrayAdapter adapter = new EpisodeArrayAdapter(this, android.R.layout.simple_list_item_1, episodes);
+    listView.setAdapter(adapter);
+    messageView.setVisibility(View.GONE);
   }
 }
