@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -81,11 +82,8 @@ public class MainActivity extends BaseActivity {
   }
 
   public void refresh() {
-    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-    String server = preferences.getString("pref_server", "");
-    String user_id_hash = preferences.getString("pref_id_hash", "");
-
-    String url = String.format("http://%s/api/v1/queued_episodes?user_id_hash=%s", server, user_id_hash);
+    String url = q("queued_episodes").toString();
+    displayMessage(url);
 
     ConnectivityManager connMgr = (ConnectivityManager)
       getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -106,7 +104,13 @@ public class MainActivity extends BaseActivity {
           }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-              displayMessage("That didn't work!");
+              NetworkResponse networkResponse = error.networkResponse;
+              if (networkResponse != null) {
+                int status = networkResponse.statusCode;
+                displayMessage(String.format("status: %d", status));
+              } else {
+                displayMessage("That didn't work!");
+              }
             }
           });
       // Add the request to the RequestQueue.
@@ -119,6 +123,7 @@ public class MainActivity extends BaseActivity {
 
   private void displayMessage(String message) {
     messageView.setText(message);
+    messageView.setVisibility(View.VISIBLE);
   }
 
   private void displayEpisodes(String episodes) {

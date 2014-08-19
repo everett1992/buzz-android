@@ -1,7 +1,11 @@
 package com.example.buzz;
 
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,5 +37,17 @@ public class BaseActivity extends Activity {
     startActivity(intent);
   }
 
-}
+  protected Query q(String model) {
 
+    SharedPreferences preferences =
+      PreferenceManager.getDefaultSharedPreferences(this);
+    String hostname = preferences.getString("pref_server", "");
+    String user_id_hash = preferences.getString("pref_id_hash", "");
+
+    HashMap<String, String> params = new HashMap<String, String>();
+    params.put("user_id_hash", user_id_hash);
+
+    return new Query(hostname, model, params);
+
+  }
+}
