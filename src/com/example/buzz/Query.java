@@ -1,62 +1,53 @@
 package com.example.buzz;
 
-import java.util.Dictionary;
-import java.util.HashMap;
+import org.json.JSONObject;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public class Query {
-  String hostname;
-  String model;
-  HashMap<String, String> params;
+  private ConnectivityManager connMgr;
+  private RequestQueue requestQueue;
 
-  public Query(String hostname) {
-    this.hostname = hostname;
-    this.params = new HashMap<String, String>();
-  }
+  public Query(ConnectivityManager connMgr, RequestQueue requestQueue) {
+    this.connMgr = connMgr;
+    this.requestQueue = requestQueue;
+  };
 
-  public Query(String hostname, HashMap<String, String> params) {
-    this.hostname = hostname;
-    this.params = params;
-  }
-
-  public Query(String hostname, String model, HashMap<String, String> params) {
-    this.hostname = hostname;
-    this.model = model;
-    this.params = params;
-  }
-
-  public Query(String hostname, String model) {
-    this.hostname = hostname;
-    this.params = new HashMap<String, String>();
-  }
-
-  // returns a new Query with the param added.
-  public Query addParam(String key, String value) {
-    @SuppressWarnings("unchecked")
-	HashMap<String, String> new_params = (HashMap<String, String>) params.clone();
-    new_params.put(key, value);
-    return new Query(hostname, model, new_params);
-  }
-
-  private String baseName() {
-    if (model == null) {
-      return hostname;
+  public void execute(QueryUrl queryUrl, final Callbacks callbacks) {
+    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+    if (networkInfo != null && networkInfo.isConnected()) {
+      JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, queryUrl.toString(),
+          null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+              // Success callback
+              callbacks.onSuccess(response);
+            }
+          }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+              // Error callback
+              callbacks.onError(error);
+            }
+          });
+      // Add the request to the RequestQueue.
+      requestQueue.add(jsonObjectRequest);
     } else {
-      return String.format("%s%s", hostname, model);
+      // No network callback
+      callbacks.onNoNetwork(networkInfo);
     }
   }
 
-  private String url() {
-    StringBuilder url = new StringBuilder(baseName());
-    String sep = "?";
-    for (String key : params.keySet()) {
-      String value = params.get(key);
-      url.append(String.format("%s%s=%s", sep, key, value));
-      sep = "&";
-    }
-    return url.toString();
-  }
-
-  public String toString() {
-    return url();
+  public interface Callbacks {
+    public void onSuccess(JSONObject j);
+    public void onError(VolleyError e);
+    public void onNoNetwork(NetworkInfo n);
   }
 }

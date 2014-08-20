@@ -1,5 +1,7 @@
 package com.example.buzz;
 
+import com.example.buzz.results.EpisodeResult;
+
 import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -7,9 +9,9 @@ import android.widget.TextView;
 import android.widget.ImageView;
 
 public class EpisodeView extends LinearLayout {
-  private EpisodeModel episode;
+  private EpisodeResult episode;
 
-  public EpisodeView(Context context, EpisodeModel episode) {
+  public EpisodeView(Context context, EpisodeResult episode) {
     super(context);
     this.episode = episode;
 

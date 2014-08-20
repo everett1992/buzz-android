@@ -4,7 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -17,16 +16,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.buzz.results.EpisodeResult;
 import com.google.gson.Gson;
 
 public class MainActivity extends BaseActivity {
-  private EpisodeModel[] episodes;
+  private EpisodeResult[] episodes;
   private TextView messageView;
   private ListView listView;
   private RequestQueue requestQueue;
@@ -46,7 +43,6 @@ public class MainActivity extends BaseActivity {
     requestQueue = Volley.newRequestQueue(this);
 
     if (savedInstanceState != null) {
-      Gson gson = new Gson();
       displayMessage(savedInstanceState.getString("message"));
       displayEpisodes(savedInstanceState.getString("episodes"));
     }
@@ -82,43 +78,35 @@ public class MainActivity extends BaseActivity {
   }
 
   public void refresh() {
-    String url = q("queued_episodes").toString();
-    displayMessage(url);
-
     ConnectivityManager connMgr = (ConnectivityManager)
       getSystemService(Context.CONNECTIVITY_SERVICE);
-    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-    if (networkInfo != null && networkInfo.isConnected()) {
-      displayMessage("refreshing...");
-      // Request a string response from the provided URL.
-      JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
-          null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-              try {
-                displayEpisodes(response.getJSONArray("episodes").toString());
-              } catch (JSONException ex) {
-                displayMessage("JSON parse error");
-              }
-            }
-          }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-              NetworkResponse networkResponse = error.networkResponse;
-              if (networkResponse != null) {
-                int status = networkResponse.statusCode;
-                displayMessage(String.format("status: %d", status));
-              } else {
-                displayMessage("That didn't work!");
-              }
-            }
-          });
-      // Add the request to the RequestQueue.
-      requestQueue.add(jsonObjectRequest);
-    } else {
-      messageView.setVisibility(View.VISIBLE);
-      messageView.setText("No network connection available.");
-    }
+    Query query = new Query(connMgr, requestQueue);
+
+    query.execute(q("queued_episodes"), new Query.Callbacks() {
+      @Override
+      public void onSuccess(JSONObject response) {
+        try {
+          displayEpisodes(response.getJSONArray("episodes").toString());
+        } catch (JSONException ex) {
+          displayMessage("JSON parse error");
+        }
+      }
+
+      @Override
+      public void onError(VolleyError error) {
+        NetworkResponse networkResponse = error.networkResponse;
+        if (networkResponse != null) {
+          int status = networkResponse.statusCode;
+          displayMessage(String.format("status: %d", status));
+        } else {
+          displayMessage(q("queued_episodes").toString());
+        }
+      }
+      @Override
+      public void onNoNetwork(NetworkInfo info) {
+        displayEpisodes("No network connection available.");
+      }
+    });
   }
 
   private void displayMessage(String message) {
@@ -128,10 +116,10 @@ public class MainActivity extends BaseActivity {
 
   private void displayEpisodes(String episodes) {
     Gson gson = new Gson();
-    displayEpisodes(gson.fromJson(episodes, EpisodeModel[].class));
+    displayEpisodes(gson.fromJson(episodes, EpisodeResult[].class));
   }
 
-  private void displayEpisodes(EpisodeModel[] episodes) {
+  private void displayEpisodes(EpisodeResult[] episodes) {
     this.episodes = episodes;
     EpisodeArrayAdapter adapter = new EpisodeArrayAdapter(this, android.R.layout.simple_list_item_1, episodes);
     listView.setAdapter(adapter);

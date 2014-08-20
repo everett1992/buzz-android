@@ -37,7 +37,7 @@ public class BaseActivity extends Activity {
     startActivity(intent);
   }
 
-  protected Query q(String model) {
+  protected QueryUrl q(String model) {
 
     SharedPreferences preferences =
       PreferenceManager.getDefaultSharedPreferences(this);
@@ -47,7 +47,7 @@ public class BaseActivity extends Activity {
     HashMap<String, String> params = new HashMap<String, String>();
     params.put("user_id_hash", user_id_hash);
 
-    return new Query(hostname, model, params);
+    return new QueryUrl(hostname, model, params);
 
   }
 }
