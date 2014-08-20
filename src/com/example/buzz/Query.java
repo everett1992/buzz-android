@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -27,8 +28,11 @@ public class Query {
           null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+              Gson gson = new Gson();
+              QueryResults qr = gson.fromJson(response.toString(), QueryResults.class);
+
               // Success callback
-              callbacks.onSuccess(response);
+              callbacks.onSuccess(qr.toModelCollection());
             }
           }, new Response.ErrorListener() {
             @Override
@@ -46,7 +50,7 @@ public class Query {
   }
 
   public interface Callbacks {
-    public void onSuccess(JSONObject j);
+    public void onSuccess(ModelCollection m);
     public void onError(VolleyError e);
     public void onNoNetwork(NetworkInfo n);
   }

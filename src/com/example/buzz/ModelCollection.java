@@ -14,23 +14,22 @@ public class ModelCollection {
   public ModelCollection(QueryResults qr) {
     this.episodes = qr.episodes;
     this.podcasts = qr.podcasts;
-    this.queuedEpisodes = qr.queuedEpisodes;
+    this.queuedEpisodes = qr.queued_episodes;
 
-    episodesMap = new ModelMap<EpisodeResult>(qr.episodes, this);
-    podcastsMap = new ModelMap<PodcastResult>(qr.podcasts, this);
-    queuedEpisodesMap = new ModelMap<QueuedEpisodeResult>(qr.queuedEpisodes, this);
+    episodesMap = new ModelMap<EpisodeResult>(episodes, this);
+    podcastsMap = new ModelMap<PodcastResult>(podcasts, this);
+    queuedEpisodesMap = new ModelMap<QueuedEpisodeResult>(queuedEpisodes, this);
   }
-  
+
   public EpisodeResult getEpisodeByID(int id) {
     return episodesMap.get(id);
   }
-  
+
   public PodcastResult getPodcastByID(int id) {
     return podcastsMap.get(id);
   }
-  
+
   public QueuedEpisodeResult getQueuedEpisodeByID(int id) {
     return queuedEpisodesMap.get(id);
   }
 }
-

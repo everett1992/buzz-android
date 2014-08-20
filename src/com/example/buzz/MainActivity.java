@@ -1,8 +1,5 @@
 package com.example.buzz;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -84,12 +81,8 @@ public class MainActivity extends BaseActivity {
 
     query.execute(q("queued_episodes"), new Query.Callbacks() {
       @Override
-      public void onSuccess(JSONObject response) {
-        try {
-          displayEpisodes(response.getJSONArray("episodes").toString());
-        } catch (JSONException ex) {
-          displayMessage("JSON parse error");
-        }
+      public void onSuccess(ModelCollection mc) {
+          displayEpisodes(mc.episodes);
       }
 
       @Override

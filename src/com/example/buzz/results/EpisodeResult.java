@@ -1,11 +1,13 @@
 package com.example.buzz.results;
 
+import java.net.URI;
+
 public class EpisodeResult extends Result {
   public int id;
   public String title;
-  public String link_url;
   public String description;
-  public String audio_url;
+  public URI link_url;
+  public URI audio_url;
   public String publication_date;
   public int podcast_id;
   public String duration;

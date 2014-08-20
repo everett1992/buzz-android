@@ -5,7 +5,7 @@ import com.example.buzz.results.*;
 public class QueryResults {
   EpisodeResult[] episodes;
   PodcastResult[] podcasts;
-  QueuedEpisodeResult[] queuedEpisodes;
+  QueuedEpisodeResult[] queued_episodes;
 
   public ModelCollection toModelCollection() {
     return new ModelCollection(this);
