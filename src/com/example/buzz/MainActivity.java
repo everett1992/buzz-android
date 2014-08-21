@@ -16,7 +16,11 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.example.buzz.results.EpisodeResult;
+import com.example.buzz.R;
+import com.example.buzz.adapters.EpisodeArrayAdapter;
+import com.example.buzz.models.EpisodeResult;
+import com.example.buzz.models.ModelCollection;
+import com.example.buzz.query.Query;
 import com.google.gson.Gson;
 
 public class MainActivity extends BaseActivity {
@@ -37,7 +41,7 @@ public class MainActivity extends BaseActivity {
 
     messageView = (TextView) findViewById(R.id.message);
     listView = (ListView) findViewById(R.id.names);
-    requestQueue = Volley.newRequestQueue(this);
+    requestQueue = Volley.newRequestQueue(this.getApplicationContext());
 
     if (savedInstanceState != null) {
       displayMessage(savedInstanceState.getString("message"));
@@ -92,7 +96,7 @@ public class MainActivity extends BaseActivity {
           int status = networkResponse.statusCode;
           displayMessage(String.format("status: %d", status));
         } else {
-          displayMessage(q("queued_episodes").toString());
+          displayMessage(String.format("No response from %s", q("queued_episodes").toString()));
         }
       }
       @Override

@@ -1,4 +1,4 @@
-package com.example.buzz;
+package com.example.buzz.query;
 
 import java.util.HashMap;
 

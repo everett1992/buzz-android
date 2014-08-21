@@ -1,6 +1,6 @@
-package com.example.buzz;
+package com.example.buzz.models;
 
-import com.example.buzz.results.Result;
+import com.example.buzz.models.Result;
 
 import java.util.HashMap;
 

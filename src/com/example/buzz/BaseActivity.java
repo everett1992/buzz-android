@@ -2,6 +2,9 @@ package com.example.buzz;
 
 import java.util.HashMap;
 
+import com.example.buzz.R;
+import com.example.buzz.query.QueryUrl;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;

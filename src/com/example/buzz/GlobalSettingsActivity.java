@@ -1,5 +1,7 @@
 package com.example.buzz;
 
+import com.example.buzz.R;
+
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 

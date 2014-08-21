@@ -1,6 +1,8 @@
-package com.example.buzz;
+package com.example.buzz.query;
 
 import org.json.JSONObject;
+
+import com.example.buzz.models.ModelCollection;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;

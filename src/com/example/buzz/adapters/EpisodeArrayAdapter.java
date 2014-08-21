@@ -1,6 +1,7 @@
-package com.example.buzz;
+package com.example.buzz.adapters;
 
-import com.example.buzz.results.EpisodeResult;
+import com.example.buzz.models.EpisodeResult;
+import com.example.buzz.views.EpisodeView;
 
 import android.content.Context;
 import android.view.View;

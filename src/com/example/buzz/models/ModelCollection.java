@@ -1,11 +1,11 @@
-package com.example.buzz;
+package com.example.buzz.models;
 
-import com.example.buzz.results.*;
+import com.example.buzz.query.QueryResults;
 
 public class ModelCollection {
-  EpisodeResult[] episodes;
-  PodcastResult[] podcasts;
-  QueuedEpisodeResult[] queuedEpisodes;
+  public EpisodeResult[] episodes;
+  public PodcastResult[] podcasts;
+  public QueuedEpisodeResult[] queuedEpisodes;
 
   private ModelMap<EpisodeResult> episodesMap;
   private ModelMap<PodcastResult> podcastsMap;

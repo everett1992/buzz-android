@@ -1,6 +1,6 @@
 package com.example.buzz;
 
-import com.example.buzz.results.EpisodeResult;
+import com.example.buzz.models.EpisodeResult;
 
 public class StoredEpisodeManager {
   // Returns a stream of the episodes audio from the store

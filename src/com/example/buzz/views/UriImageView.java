@@ -1,4 +1,4 @@
-package com.example.buzz;
+package com.example.buzz.views;
 
 import android.content.Context;
 import android.widget.ImageView;

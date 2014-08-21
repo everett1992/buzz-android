@@ -1,4 +1,4 @@
-package com.example.buzz.results;
+package com.example.buzz.models;
 
 public class QueuedEpisodeResult extends Result {
 	public int id;

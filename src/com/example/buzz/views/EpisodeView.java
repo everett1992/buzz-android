@@ -1,8 +1,9 @@
-package com.example.buzz;
+package com.example.buzz.views;
+
+import com.example.buzz.R;
+import com.example.buzz.models.EpisodeResult;
 
 import java.net.URI;
-
-import com.example.buzz.results.EpisodeResult;
 
 import android.content.Context;
 import android.util.Log;

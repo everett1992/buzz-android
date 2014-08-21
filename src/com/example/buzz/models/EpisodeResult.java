@@ -1,4 +1,4 @@
-package com.example.buzz.results;
+package com.example.buzz.models;
 
 import java.net.URI;
 

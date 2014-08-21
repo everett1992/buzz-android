@@ -1,6 +1,6 @@
-package com.example.buzz.results;
+package com.example.buzz.models;
 
-import com.example.buzz.ModelCollection;
+import com.example.buzz.models.ModelCollection;
 
 public abstract class Result {
   protected ModelCollection modelCollection;
