@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,10 +23,12 @@ import com.example.buzz.models.EpisodeResult;
 import com.example.buzz.models.ModelCollection;
 import com.example.buzz.network.Provider;
 import com.example.buzz.query.Query;
+import com.example.buzz.query.QueryResults;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class MainActivity extends BaseActivity {
-  private EpisodeResult[] episodes;
+  private ModelCollection modelCollection;
   private TextView messageView;
   private ListView listView;
 
@@ -43,8 +46,15 @@ public class MainActivity extends BaseActivity {
     listView = (ListView) findViewById(R.id.names);
 
     if (savedInstanceState != null) {
+      Gson gson = new Gson();
       displayMessage(savedInstanceState.getString("message"));
-      displayEpisodes(savedInstanceState.getString("episodes"));
+
+      QueryResults qr =
+        gson.fromJson(savedInstanceState.getString("query_result"), QueryResults.class);
+
+      if (qr != null) {
+        displayEpisodes(new ModelCollection(qr));
+      }
     }
   }
 
@@ -70,10 +80,14 @@ public class MainActivity extends BaseActivity {
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     // save state of your activity to outState
-    Gson gson = new Gson();
+    GsonBuilder builder = new GsonBuilder();
+    builder.excludeFieldsWithoutExposeAnnotation();
+    Gson gson = builder.create();
     String message = messageView.getText().toString();
 
-    outState.putString("episodes", gson.toJson(episodes));
+    if (modelCollection != null) {
+      outState.putString("query_result", gson.toJson(modelCollection.getQr()));
+    }
     outState.putString("message", message);
   }
 
@@ -87,7 +101,8 @@ public class MainActivity extends BaseActivity {
     query.execute(q("queued_episodes"), new Query.Callbacks() {
       @Override
       public void onSuccess(ModelCollection mc) {
-        displayEpisodes(mc.episodes);
+        modelCollection = mc;
+        displayEpisodes(mc);
       }
 
       @Override
@@ -102,7 +117,7 @@ public class MainActivity extends BaseActivity {
       }
       @Override
       public void onNoNetwork(NetworkInfo info) {
-        displayEpisodes("No network connection available.");
+        displayMessage("No network connection available.");
       }
     });
   }
@@ -112,14 +127,9 @@ public class MainActivity extends BaseActivity {
     messageView.setVisibility(View.VISIBLE);
   }
 
-  private void displayEpisodes(String episodes) {
-    Gson gson = new Gson();
-    displayEpisodes(gson.fromJson(episodes, EpisodeResult[].class));
-  }
-
-  private void displayEpisodes(EpisodeResult[] episodes) {
-    this.episodes = episodes;
-    EpisodeArrayAdapter adapter = new EpisodeArrayAdapter(this, android.R.layout.simple_list_item_1, episodes);
+  private void displayEpisodes(ModelCollection mc) {
+    modelCollection = mc;
+    EpisodeArrayAdapter adapter = new EpisodeArrayAdapter(this, android.R.layout.simple_list_item_1, modelCollection.getEpisodes());
     listView.setAdapter(adapter);
     messageView.setVisibility(View.GONE);
   }
