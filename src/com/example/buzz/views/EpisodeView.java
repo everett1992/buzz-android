@@ -1,7 +1,10 @@
 package com.example.buzz.views;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.buzz.R;
 import com.example.buzz.models.EpisodeResult;
+import com.example.buzz.network.Provider;
 
 import java.net.URI;
 
@@ -38,11 +41,15 @@ public class EpisodeView extends LinearLayout {
   }
 
   private void addImage() {
+    ImageLoader imageLoader = Provider.getInstance(getContext()).getImageLoader();
     URI image_url = episode.podcast().image_url;
     if (image_url != null) {
       Log.v(episode.title, image_url.toString());
-      UriImageView podcast_image = new UriImageView(getContext());
-      podcast_image.setImageUri(image_url);
+      NetworkImageView podcast_image = new NetworkImageView(getContext());
+      podcast_image.setImageUrl(image_url.toString(), imageLoader);
+
+      LayoutParams params = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+      podcast_image.setLayoutParams(params);
 
       addView(podcast_image);
     } else {

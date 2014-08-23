@@ -20,6 +20,7 @@ import com.example.buzz.R;
 import com.example.buzz.adapters.EpisodeArrayAdapter;
 import com.example.buzz.models.EpisodeResult;
 import com.example.buzz.models.ModelCollection;
+import com.example.buzz.network.Provider;
 import com.example.buzz.query.Query;
 import com.google.gson.Gson;
 
@@ -27,7 +28,6 @@ public class MainActivity extends BaseActivity {
   private EpisodeResult[] episodes;
   private TextView messageView;
   private ListView listView;
-  private RequestQueue requestQueue;
 
   /** Called when the activity is first created. */
   @Override
@@ -41,7 +41,6 @@ public class MainActivity extends BaseActivity {
 
     messageView = (TextView) findViewById(R.id.message);
     listView = (ListView) findViewById(R.id.names);
-    requestQueue = Volley.newRequestQueue(this.getApplicationContext());
 
     if (savedInstanceState != null) {
       displayMessage(savedInstanceState.getString("message"));
@@ -79,14 +78,16 @@ public class MainActivity extends BaseActivity {
   }
 
   public void refresh() {
+    Provider provider = Provider.getInstance(getApplicationContext());
+
     ConnectivityManager connMgr = (ConnectivityManager)
       getSystemService(Context.CONNECTIVITY_SERVICE);
-    Query query = new Query(connMgr, requestQueue);
+    Query query = new Query(connMgr, provider.getRequestQueue());
 
     query.execute(q("queued_episodes"), new Query.Callbacks() {
       @Override
       public void onSuccess(ModelCollection mc) {
-          displayEpisodes(mc.episodes);
+        displayEpisodes(mc.episodes);
       }
 
       @Override

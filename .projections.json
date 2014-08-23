@@ -12,6 +12,10 @@
     "type": "activity",
     "alternate": "res/layout/{snakecase}.xml"
   },
-  "src/com/example/buzz/*Model.java": { "type": "model" },
+  "src/com/example/buzz/models/*.java": { "type": "model" },
+  "src/com/example/buzz/views/*View.java": { "type": "view" },
+  "src/com/example/buzz/query/*.java": { "type": "query" },
+  "src/com/example/buzz/adapter/*Adapter.java": { "type": "adapter" },
+  "src/com/example/buzz/network/*.java": { "type": "network" },
   "src/com/example/buzz/*.java": { "type": "source" }
 }
