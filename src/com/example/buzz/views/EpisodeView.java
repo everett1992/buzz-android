@@ -48,8 +48,11 @@ public class EpisodeView extends LinearLayout {
       NetworkImageView podcast_image = new NetworkImageView(getContext());
       podcast_image.setImageUrl(image_url.toString(), imageLoader);
 
-      LayoutParams params = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+      LayoutParams params = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
       podcast_image.setLayoutParams(params);
+
+      podcast_image.setAdjustViewBounds(true);
+      podcast_image.setMaxWidth(100);
 
       addView(podcast_image);
     } else {
@@ -59,7 +62,9 @@ public class EpisodeView extends LinearLayout {
 
   private void addSynced() {
     ImageView synced = new ImageView(getContext());
-    synced.setImageResource(R.drawable.ic_action_accept);
+    if (episode.isStored()) {
+      synced.setImageResource(R.drawable.ic_action_accept);
+    }
 
     addView(synced);
   }

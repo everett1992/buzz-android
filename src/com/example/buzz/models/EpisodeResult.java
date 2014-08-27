@@ -34,5 +34,9 @@ public class EpisodeResult extends Result {
     return modelCollection.getPodcastByID(podcast_id);
   }
 
+  public boolean isStored() {
+    return true;
+  }
+
   public int getId() { return id; }
 }

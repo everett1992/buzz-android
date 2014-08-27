@@ -17,5 +17,5 @@
   "src/com/example/buzz/query/*.java": { "type": "query" },
   "src/com/example/buzz/adapter/*Adapter.java": { "type": "adapter" },
   "src/com/example/buzz/network/*.java": { "type": "network" },
-  "src/com/example/buzz/*.java": { "type": "source" }
+  "src/com/example/buzz/*": { "type": "source" }
 }
