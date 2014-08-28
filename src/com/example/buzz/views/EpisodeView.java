@@ -26,6 +26,7 @@ public class EpisodeView extends LinearLayout {
 
     addImage();
     addTitle();
+    addProgress();
     addSynced();
   }
 
@@ -67,6 +68,17 @@ public class EpisodeView extends LinearLayout {
     }
 
     addView(synced);
+  }
+
+  private void addProgress() {
+    TextView progress = new TextView(getContext());
+    progress.setText(this.episode.getCount().toString());
+    progress.setTextSize(20);
+
+    LayoutParams params = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
+    progress.setLayoutParams(params);
+
+    addView(progress);
   }
 }
 

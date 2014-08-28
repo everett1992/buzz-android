@@ -30,12 +30,25 @@ public class EpisodeResult extends Result {
   @Expose
   public String last_listened_at;
 
+  private boolean stored = false;
+  private Integer count = 0;
+
   public PodcastResult podcast() {
     return modelCollection.getPodcastByID(podcast_id);
   }
 
+  public void setStored(boolean stored) {
+    this.stored = stored;
+  }
+  public void setCount(Integer count) {
+    this.count = count;
+  }
+
   public boolean isStored() {
-    return true;
+    return stored;
+  }
+  public Integer getCount() {
+    return count;
   }
 
   public int getId() { return id; }

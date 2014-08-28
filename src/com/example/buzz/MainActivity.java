@@ -70,6 +70,9 @@ public class MainActivity extends BaseActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle presses on the action bar items
     switch (item.getItemId()) {
+      case R.id.action_download:
+        download();
+        return true;
       case R.id.action_refresh:
         refresh();
         return true;
@@ -120,6 +123,29 @@ public class MainActivity extends BaseActivity {
         displayMessage("No network connection available.");
       }
     });
+  }
+
+  public void download() {
+    // create a download task for every episode in the queue
+    EpisodeStore<String> episodeStore = new EpisodeStore<String>() {
+      @Override
+      protected void onEpisodePreExecute(EpisodeResult episode) {
+      }
+
+      @Override
+      protected void onEpisodeProgressUpdate(EpisodeResult episode, Integer... ignored) {
+        episode.setCount(ignored[0]);
+      }
+      @Override
+      protected void onEpisodePostExecute(EpisodeResult episode, String ignored) {
+        episode.setStored(true);
+        listView.invalidateViews();
+      }
+    };
+
+    for (EpisodeResult episode : modelCollection.getEpisodes()) {
+      episodeStore.store(episode);
+    }
   }
 
   private void displayMessage(String message) {
