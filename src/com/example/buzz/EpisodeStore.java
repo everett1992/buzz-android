@@ -17,7 +17,7 @@ public abstract class EpisodeStore<Result> {
   public boolean store(EpisodeResult episode) {
     if (episodes.add(episode)) {
       EpisodeDownloadTask downloadTask = new EpisodeDownloadTask(episode);
-      downloadTask.execute(episode.audio_url);
+      downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, episode.audio_url);
       return true;
     } else {
       return false;
@@ -44,7 +44,6 @@ public abstract class EpisodeStore<Result> {
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
-        count += 1;
         onEpisodeProgressUpdate(episode, count);
     }
 
@@ -56,6 +55,14 @@ public abstract class EpisodeStore<Result> {
 
     @Override
     protected Result doInBackground(URI... arg0) {
+      while (count < 100) {
+        count += 1;
+        try {
+          Thread.sleep(100);
+        } catch (Exception ex ){
+        }
+        publishProgress(count);
+      }
       return null;
     }
   }

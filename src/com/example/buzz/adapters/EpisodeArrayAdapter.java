@@ -19,7 +19,11 @@ public class EpisodeArrayAdapter extends ArrayAdapter<EpisodeResult> {
   public View getView(int position, View convertView, ViewGroup parent) {
     EpisodeResult episode = getItem(position);
 
-    return new EpisodeView(getContext(), episode);
+    if (convertView == null) {
+      return new EpisodeView(getContext(), episode);
+    } else {
+      return ((EpisodeView) convertView).update();
+    }
   }
 }
 

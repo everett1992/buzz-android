@@ -18,67 +18,72 @@ import android.widget.ImageView;
 public class EpisodeView extends LinearLayout {
   private EpisodeResult episode;
 
+  private NetworkImageView podcastImageView;
+  private TextView titleView;
+  private TextView progressView;
+  private ImageView syncedView;
+
   public EpisodeView(Context context, EpisodeResult episode) {
     super(context);
     this.episode = episode;
 
     setPadding(0, 0, 10, 10);
 
-    addImage();
-    addTitle();
-    addProgress();
-    addSynced();
-  }
+    Log.e("Update", String.format("Should redraw this episode %s, %d", episode.title, episode.getCount()));
 
-  private void addTitle() {
-    TextView title = new TextView(getContext());
-    title.setText(this.episode.title);
-    title.setTextSize(20);
 
+    // Create and configure title view.
+    titleView = new TextView(getContext());
+    titleView.setTextSize(20);
     LayoutParams params = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
-    title.setLayoutParams(params);
+    titleView.setLayoutParams(params);
 
-    addView(title);
+    // Create and configure podcast image view.
+    podcastImageView = new NetworkImageView(getContext());
+    LayoutParams podcastImageParams = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    podcastImageView.setLayoutParams(podcastImageParams);
+    podcastImageView.setAdjustViewBounds(true);
+    podcastImageView.setMaxWidth(100);
+
+    // Create and configure synced view.
+    syncedView = new ImageView(getContext());
+
+    // Create and configure progress view.
+    progressView = new TextView(getContext());
+    LayoutParams progressParams = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
+    progressView.setLayoutParams(progressParams);
+    progressView.setTextSize(20);
+
+    // Add all of the views.
+    addView(podcastImageView);
+    addView(titleView);
+    addView(progressView);
+    addView(syncedView);
+
+    update();
   }
 
-  private void addImage() {
+  public EpisodeView update() {
+    // Set title
+    titleView.setText(this.episode.title);
+
+    // Set image
     ImageLoader imageLoader = Provider.getInstance(getContext()).getImageLoader();
     URI image_url = episode.podcast().image_url;
     if (image_url != null) {
-      Log.v(episode.title, image_url.toString());
-      NetworkImageView podcast_image = new NetworkImageView(getContext());
-      podcast_image.setImageUrl(image_url.toString(), imageLoader);
-
-      LayoutParams params = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-      podcast_image.setLayoutParams(params);
-
-      podcast_image.setAdjustViewBounds(true);
-      podcast_image.setMaxWidth(100);
-
-      addView(podcast_image);
-    } else {
-      Log.e(episode.title, "null");
+      podcastImageView.setImageUrl(image_url.toString(), imageLoader);
     }
-  }
 
-  private void addSynced() {
-    ImageView synced = new ImageView(getContext());
+    // Set stored
     if (episode.isStored()) {
-      synced.setImageResource(R.drawable.ic_action_accept);
+      syncedView.setImageResource(R.drawable.ic_action_accept);
     }
 
-    addView(synced);
+    // Set progress
+    progressView.setText(this.episode.getCount().toString());
+
+    return this;
   }
 
-  private void addProgress() {
-    TextView progress = new TextView(getContext());
-    progress.setText(this.episode.getCount().toString());
-    progress.setTextSize(20);
-
-    LayoutParams params = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
-    progress.setLayoutParams(params);
-
-    addView(progress);
-  }
 }
 

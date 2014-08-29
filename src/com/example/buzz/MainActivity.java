@@ -135,10 +135,20 @@ public class MainActivity extends BaseActivity {
       @Override
       protected void onEpisodeProgressUpdate(EpisodeResult episode, Integer... ignored) {
         episode.setCount(ignored[0]);
+
+        int start = listView.getFirstVisiblePosition();
+        for(int i=start, j=listView.getLastVisiblePosition(); i<=j; i++) {
+          if(episode == listView.getItemAtPosition(i)) {
+            View view = listView.getChildAt(i - start);
+            listView.getAdapter().getView(i, view, listView);
+            break;
+          }
+        }
       }
       @Override
       protected void onEpisodePostExecute(EpisodeResult episode, String ignored) {
         episode.setStored(true);
+
         listView.invalidateViews();
       }
     };
